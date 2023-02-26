@@ -1,0 +1,3 @@
+/Users/carloronconi/Projects/Cpp/CG-assignments/A00/cmake-build-debug/CMakeFiles/A00.dir
+/Users/carloronconi/Projects/Cpp/CG-assignments/A00/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/carloronconi/Projects/Cpp/CG-assignments/A00/cmake-build-debug/CMakeFiles/rebuild_cache.dir
