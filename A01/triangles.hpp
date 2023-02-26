@@ -27,24 +27,35 @@ void SetupTriangles(Assignment01 *A) {
 void drawHouse(Assignment01 *A) {
     drawRoof(A);
     drawWallAndOpenings(A);
+    drawGarden(A);
 }
 
 void drawRoof(Assignment01 *A) {
     // red roof
     //          left     middle   right   red
     A->Triangle(-0.5, 0, 0, -0.5, 0.5, 0, 1, 0, 0);
+    // red chimney
+    drawRectangle(-0.35, -0.4, -0.25, 0, 1, 0, 0, A);
 }
 
 void drawWallAndOpenings(Assignment01 *A) {
-    // blue walls
-    // same 2 points as left and right in roof plus different point goes in bottom-left
-    A->Triangle(-0.5, 0, -0.5, 0.5, 0.5, 0, 0, 0, 1);
-    // change just first point to go in bottom-right corner of the house
-    A->Triangle(0.5, 0.5, -0.5, 0.5, 0.5, 0, 0, 0, 1);
+    // draw blue walls
+    drawRectangle(-0.5, 0, 0.5, 0.5, 0, 0, 1, A);
+    // draw brown door
+    drawRectangle(0.2, 0.1, 0.4, 0.5, 0.3, 0.2, 0.1, A);
+    // draw white window
+    drawRectangle(-0.2, 0.1, -0.4, 0.3, 1, 1, 1, A);
 
-    // TODO: generalize drawing square to create door and window
 }
 
 void drawGarden(Assignment01 *A) {
+    drawRectangle(-1, 0.5, 1, 1, 0, 1, 0, A);
+}
 
+/**
+ * use two triangles to draw a rectangle
+ */
+void drawRectangle(float x1, float y1, float x2, float y2, float r, float g, float b, Assignment01 *A) {
+    A->Triangle(x1, y1, x1, y2, x2, y1, r, g, b);
+    A->Triangle(x2, y2, x2, y1, x1, y2, r, g, b);
 }
