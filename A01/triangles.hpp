@@ -17,8 +17,34 @@ void SetupTriangles(Assignment01 *A) {
  It is not necessery to use a for loop if you do not really need it: it has been put here only as
  an example to help students not familiar with C++.
 ***************/
-
+/* Example
 	A->Triangle(-1,-1, 0,0, -1,1,   1,0,0);	// Draws a red triangle pointing right
 	A->Triangle(1,-1, 0,0, 1,1,   0,1,0);	// Draws a green triangle pointing left
+ */
+    drawHouse(A);
+}
+
+void drawHouse(Assignment01 *A) {
+    drawRoof(A);
+    drawWallAndOpenings(A);
+}
+
+void drawRoof(Assignment01 *A) {
+    // red roof
+    //          left     middle   right   red
+    A->Triangle(-0.5, 0, 0, -0.5, 0.5, 0, 1, 0, 0);
+}
+
+void drawWallAndOpenings(Assignment01 *A) {
+    // blue walls
+    // same 2 points as left and right in roof plus different point goes in bottom-left
+    A->Triangle(-0.5, 0, -0.5, 0.5, 0.5, 0, 0, 0, 1);
+    // change just first point to go in bottom-right corner of the house
+    A->Triangle(0.5, 0.5, -0.5, 0.5, 0.5, 0, 0, 0, 1);
+
+    // TODO: generalize drawing square to create door and window
+}
+
+void drawGarden(Assignment01 *A) {
 
 }
