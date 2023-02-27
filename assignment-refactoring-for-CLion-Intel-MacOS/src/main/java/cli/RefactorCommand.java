@@ -20,6 +20,13 @@ import java.util.concurrent.Callable;
 public class RefactorCommand implements Callable<Integer> {
     private final static String ASSIGNMENT_PLACEHOLDER = "ASSIGNMENT";
     private final static String USERNAME_PLACEHOLDER = "USERNAME";
+    private final String currentDirectory;
+    private final String currentUser;
+
+    public RefactorCommand() {
+        currentDirectory = System.getProperty("user.dir");
+        currentUser = System.getProperty("user.name");
+    }
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new RefactorCommand()).execute(args);
@@ -28,12 +35,16 @@ public class RefactorCommand implements Callable<Integer> {
 
     @Override
     public Integer call() {
+
+        return createCMakeFile();
+    }
+
+    private Integer createCMakeFile() {
         System.out.println("Creating CMake file...");
         File cMakeTemplateFile = new File("src/main/resources/CMakeListsTemplate.txt");
-        String currentDirectory = System.getProperty("user.dir");
-        String currentUser = System.getProperty("user.name");
 
-        try (Scanner fileReader = new Scanner(cMakeTemplateFile)) {
+        try {
+            Scanner fileReader = new Scanner(cMakeTemplateFile);
             StringBuilder stringBuilder = new StringBuilder();
             while (fileReader.hasNextLine()) {
                 stringBuilder.append(fileReader.nextLine());
@@ -55,6 +66,11 @@ public class RefactorCommand implements Callable<Integer> {
         } catch (IOException e) {
             return 1;
         }
+        return 0;
+    }
+
+    private Integer editSourceCode() {
+
         return 0;
     }
 }
