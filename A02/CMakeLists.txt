@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.13)
-project(A01)
+project(A02)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(${PROJECT_NAME} A01.cpp)
+add_executable(${PROJECT_NAME} A02.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC /usr/local/include)
 target_include_directories(${PROJECT_NAME} PUBLIC /Users/carloronconi/VulkanSDK/1.3.239.0/macOS/include)
