@@ -9,21 +9,21 @@ void SetupMatrices(Assignment02 *A) {
 
 	// To solve the puzzle: translate 2 along x, and 3 along z
 	A->Matrix(1,
-			  1, 0, 0, 0,
+			  1, 0, 0, 2,
 			  0, 1, 0, 0,
-			  0, 0, 1, 0,
+			  0, 0, 1, 3,
 			  0, 0, 0, 1); // sets the matrix corresponding to piece 1
 
 	// To solve the puzzle: rotate -15 degrees around the z axis
 	A->Matrix(2,
-			  1, 0, 0, 0,
-			  0, 1, 0, 0,
+			  0.9659, 0.2588, 0, 0,
+              -0.2588, 0.9659, 0, 0,
 			  0, 0, 1, 0,
 			  0, 0, 0, 1); // sets the matrix corresponding to piece 2
 
 	// To solve the puzzle: mirror over the yz plane
 	A->Matrix(3,
-			  1, 0, 0, 0,
+			  -1, 0, 0, 0,
 			  0, 1, 0, 0,
 			  0, 0, 1, 0,
 			  0, 0, 0, 1); // sets the matrix corresponding to piece 3
