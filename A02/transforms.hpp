@@ -30,23 +30,23 @@ void SetupMatrices(Assignment02 *A) {
 
 	// To solve the puzzle: perform a shear along the z axis, with hx = -0.5 (and hy=0)
 	A->Matrix(4,
-			  1, 0, 0, 0,
+			  1, 0, -0.5, 0,
 			  0, 1, 0, 0,
 			  0, 0, 1, 0,
 			  0, 0, 0, 1); // sets the matrix corresponding to piece 4
 
 	// To solve the puzzle: scale of 2 along the x axis, and 1.25 on the z axis			  
 	A->Matrix(5,
-			  1, 0, 0, 0,
+			  2, 0, 0, 0,
 			  0, 1, 0, 0,
-			  0, 0, 1, 0,
+			  0, 0, 1.25, 0,
 			  0, 0, 0, 1); // sets the matrix corresponding to piece 5
 
 	// To solve the puzzle: perform a proportional scaling of a factor of 3
 	A->Matrix(6,
-			  1, 0, 0, 0,
-			  0, 1, 0, 0,
-			  0, 0, 1, 0,
+			  3, 0, 0, 0,
+			  0, 3, 0, 0,
+			  0, 0, 3, 0,
 			  0, 0, 0, 1); // sets the matrix corresponding to piece 6
 
 }
