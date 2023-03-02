@@ -55,11 +55,17 @@ void SetupMatrices(Assignment03 *A) {
     /** To solve the puzzle: rotate -90 degree around an arbitrary axis passing in (-1,0,0).
      * The x axis can be aligned to this arbitrary direction with a rotation of -45 around the y axis.**/
 	S = glm::mat4(1);
-	A->Matrix(5, S); // sets the matrix corresponding to piece 5
+
+    T1 = glm::translate(S, glm::vec3(1, 0, 0));
+    T2 = glm::rotate(S, glm::radians(90.0f), glm::vec3(-1, 0, -1)) * T1;
+    T3 = glm::inverse(T1) * T2;
+	A->Matrix(5, T3 * S); // sets the matrix corresponding to piece 5
 
     /** To solve the puzzle: find it yourself! Hint: compose a non-proportional scaling that halves the object along one of the main axes,
      * centered in an arbitrary point, with a translation **/
 	S = glm::mat4(1);
-	A->Matrix(6, S); // sets the matrix corresponding to piece 6
+
+    T1 = glm::translate(S, glm::vec3(0.5, 0, 0)) * glm::scale(S, glm::vec3(0.5, 1, 1));
+	A->Matrix(6, T1 * S); // sets the matrix corresponding to piece 6
 
 }
