@@ -46,7 +46,11 @@ void SetupMatrices(Assignment03 *A) {
 
     /** To solve the puzzle: rotate 60 degree around the y axis, centered in (-1,0,-2) **/
 	S = glm::mat4(1);
-	A->Matrix(4, S); // sets the matrix corresponding to piece 4
+
+    T1 = glm::translate(S, glm::vec3(1, 0, 2));
+    T2 = glm::rotate(S, glm::radians(60.0f), glm::vec3(0, 1, 0));
+
+    A->Matrix(4, glm::inverse(T1) * T2 * T1* S); // sets the matrix corresponding to piece 4
 
     /** To solve the puzzle: rotate -90 degree around an arbitrary axis passing in (-1,0,0).
      * The x axis can be aligned to this arbitrary direction with a rotation of -45 around the y axis.**/
