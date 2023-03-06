@@ -17,45 +17,21 @@ void SetupTriangles(Assignment01 *A) {
  It is not necessery to use a for loop if you do not really need it: it has been put here only as
  an example to help students not familiar with C++.
 ***************/
-/* Example
-	A->Triangle(-1,-1, 0,0, -1,1,   1,0,0);	// Draws a red triangle pointing right
-	A->Triangle(1,-1, 0,0, 1,1,   0,1,0);	// Draws a green triangle pointing left
- */
-    drawHouse(A);
-}
 
-void drawHouse(Assignment01 *A) {
-    drawRoof(A);
-    drawWallAndOpenings(A);
-    drawGarden(A);
-}
-
-void drawRoof(Assignment01 *A) {
-    // red roof
-    //          left     middle   right   red
-    A->Triangle(-0.5, 0, 0, -0.5, 0.5, 0, 1, 0, 0);
-    // red chimney
-    drawRectangle(-0.35, -0.4, -0.25, 0, 1, 0, 0, A);
-}
-
-void drawWallAndOpenings(Assignment01 *A) {
-    // draw blue walls
-    drawRectangle(-0.5, 0, 0.5, 0.5, 0, 0, 1, A);
-    // draw brown door
-    drawRectangle(0.2, 0.1, 0.4, 0.5, 0.3, 0.2, 0.1, A);
-    // draw white window
-    drawRectangle(-0.2, 0.1, -0.4, 0.3, 1, 1, 1, A);
-
-}
-
-void drawGarden(Assignment01 *A) {
-    drawRectangle(-1, 0.5, 1, 1, 0, 1, 0, A);
-}
-
-/**
- * use two triangles to draw a rectangle
- */
-void drawRectangle(float x1, float y1, float x2, float y2, float r, float g, float b, Assignment01 *A) {
-    A->Triangle(x1, y1, x1, y2, x2, y1, r, g, b);
-    A->Triangle(x2, y2, x2, y1, x1, y2, r, g, b);
+    // red upper body
+    A->Triangle(-0.2, 0.1, 0.3, -0.4, 0.3, 0.6, 1, 0, 0);
+    // blue lower body
+    A->Triangle(-0.2, 0.1, -0.2, 0.9, 0.6, 0.9, 0.1, 0.1, 1);
+    // yellow neck
+    A->Triangle(0.3, -0.4, 0.3, 0.4, 0.7, 0, 0.9, 0.9, 0);
+    // purple head (two triangles)
+    A->Triangle(0.3, -0.4, 0.9, -0.4, 0.6, -0.1, 0.5, 0, 0.5);
+    A->Triangle(0.3, -0.4, 0.9, -0.4, 0.6, -0.7, 0.5, 0, 0.5);
+    // pink ear
+    A->Triangle(0.3, -0.4, 0.3, -1, 0.6, -0.7, 0.9, 0.2, 0.9);
+    // blue ear
+    A->Triangle(0.9, -0.4, 0.9, -1, 0.6, -0.7, 0.1, 0.1, 1);
+    // green tail
+    A->Triangle(-0.2, 0.9, -0.5, 0.9, -0.7, 0.6, 0, 0.9, 0);
+    A->Triangle(-0.2, 0.9, -0.4, 0.6, -0.7, 0.6, 0, 0.9, 0);
 }
