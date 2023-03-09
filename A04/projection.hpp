@@ -6,6 +6,8 @@ glm::mat4 dimetricProjection(float a, float w, float n, float f, float alpha);
 
 glm::mat4 trimetricProjection(float a, float w, float n, float f, float alpha, float beta);
 
+glm::mat4 cabinetProjection(float a, float w, float n, float f, float ro, float alpha);
+
 glm::mat4 parallelProjection(float a, float w, float n, float f);
 
 void SetupProjectionMatrices(Assignment04 *A, float Ar) {
@@ -34,7 +36,7 @@ void SetupProjectionMatrices(Assignment04 *A, float Ar) {
 	A->Matrix(3, S); // sets the matrix corresponding to piece 3
 
 	// Cabinet
-	S = glm::mat4(1);
+	S = cabinetProjection(a, w, n, f, 0.5f, 45.0f);
 	A->Matrix(4, S); // sets the matrix corresponding to piece 4
 
 }
@@ -54,17 +56,19 @@ glm::mat4 isometricProjection(float a, float w, float n, float f) {
 
 
 glm::mat4 dimetricProjection(float a, float w, float n, float f, float alpha) {
-
     return trimetricProjection(a, w, n, f, alpha, -45.0f);
 }
 
 glm::mat4 trimetricProjection(float a, float w, float n, float f, float alpha, float beta) {
-
     return parallelProjection(a, w, n, f) *
-           glm::rotate(glm::mat4(1), glm::radians(alpha), glm::vec3(1, 0, 0)) *
-           glm::rotate(glm::mat4(1), glm::radians(beta), glm::vec3(0, 1, 0));
+    glm::rotate(glm::mat4(1), glm::radians(alpha), glm::vec3(1, 0, 0)) *
+    glm::rotate(glm::mat4(1), glm::radians(beta), glm::vec3(0, 1, 0));
 }
 
+glm::mat4 cabinetProjection(float a, float w, float n, float f, float ro, float alpha){
+    return parallelProjection(a, w, n, f) *
+    glm::mat4(1, 0, 0, 0, 0, 1, 0, 0, -ro*cos(glm::radians(alpha)), -ro*sin(glm::radians(alpha)), 1, 0, 0, 0, 0, 1);
+}
 
 glm::mat4 parallelProjection(float a, float w, float n, float f) {
     return glm::mat4(1/w, 0, 0, 0, 0, -a/w, 0, 0, 0, 0, 1/(n-f), 0, 0, 0, n/(n-f), 1);
