@@ -1,7 +1,8 @@
 # computer-graphics-assignments
 
-	•	add CMake file (right click>new file>CMakeLists.txt)
-	  ⁃	for next project just copy the file and change the project name and executable name
-	•	add “ADDITION” changes (cmd+f “ADDITION” in Starter.hpp)
-	  ⁃	for next project copy ADDITION changes
-	•	edit run configuration: set working directory to root of the project (e.g. A00)
+## How to run a new assignent from WeBeep
+	• Download assignment Axx from WeBeep and unzip it into . folder
+	• Copy CMakeLists.txt into Axx folder
+	• Open Axx folder project with CLion: it will automatically detect that it's a CMake project
+	• Build and run!
+	
