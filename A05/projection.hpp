@@ -7,9 +7,13 @@ void SetupProjectionMatrices(Assignment05 *A, float Ar) {
 ***************/
 
 	glm::mat4 S;
-	
+
+    float n = 0.1f; // near-plane
+    float f = 50.0f; // far-plane
+    float a = Ar; // aspect-ratio
 	
 	// Fov-y = 60 deg
+    float fov = 60.0f;
 	S = glm::mat4(1);
 	A->Matrix(1, S); // sets the matrix corresponding to piece 1
 
