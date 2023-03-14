@@ -31,12 +31,14 @@ void SetupProjectionMatrices(Assignment05 *A, float Ar) {
 	A->Matrix(3, S); // sets the matrix corresponding to piece 3
 
 	// Right View, Fov-x = 45 deg
-    // TODO: fix geometry and make right view
+    /* Converting fovx into a fovy using the square triangles in the projection matrix and camera
+     * h = 2 * n * tan(fovy / 2)
+     * w = a * h
+     * fovx = 2 * atan(w / 2 * n) = 2 * atan( a * tan(fovy / 2))
+     * fovy = 2 * atan( (1 / a) * tan(fovx / 2))
+     */
     float fovx = glm::radians(45.0f);
-    float w = 2 * n * tan(fovx);
-    float h = w / a;
-    //std::cout << "aspect ratio a: " << a;
-    fovy = atan(h/n);
+    fovy = 2 * atan((1 / a) * tan(fovx / 2));
 	S = perspectiveVulkan(fovy, a, n, f);
 	A->Matrix(4, S); // sets the matrix corresponding to piece 4
 
