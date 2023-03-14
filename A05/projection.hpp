@@ -39,7 +39,10 @@ void SetupProjectionMatrices(Assignment05 *A, float Ar) {
      */
     float fovx = glm::radians(45.0f);
     fovy = 2 * atan((1 / a) * tan(fovx / 2));
-	S = perspectiveVulkan(fovy, a, n, f);
+    // use the same function created for fovy, as now fovx is converted into fovy
+    // but also multiplying by a 90 degree rotation matrix along the y-axis
+	S = perspectiveVulkan(fovy, a, n, f) *
+            glm::rotate(glm::mat4(1), glm::radians(90.0f), glm::vec3(0, 1, 0));
 	A->Matrix(4, S); // sets the matrix corresponding to piece 4
 
 }
