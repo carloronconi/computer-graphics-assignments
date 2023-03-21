@@ -17,7 +17,7 @@ void SetupProjectionMatrices(Assignment05 *A, float Ar) {
 	// Fov-y = 60 deg
     float fovy = glm::radians(60.0f);
 	S = perspectiveVulkan(fovy, a, n, f);
-    S[1][1] *= -1;
+    // S[1][1] *= -1;
 	A->Matrix(1, S); // sets the matrix corresponding to piece 1
 
 	// Fov-y = 105 deg
