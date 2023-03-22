@@ -39,11 +39,22 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
 	A->getSixAxis(deltaT, m, r, fire);
 
 	// Game Logic implementation
-	// Current Player Position - statc variables make sure thattheri value remain unchanged in subsequent calls to the procedure
+	// Current Player Position - static variables make sure that their value remain unchanged in subsequent calls to the procedure
 	static glm::vec3 Pos = StartingPosition;
 
 
 	// To be done in the assignment
-	ViewPrj = glm::mat4(1);
-	World = glm::mat4(1);	
+
+    glm::vec3 cameraPosition = glm::vec3(Pos.x, Pos.y + camHeight, Pos.z + camDist);
+    glm::mat4 Mv = // view matrix
+            glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f,1.0f,0.0f));
+
+    glm::mat4 Mprj = // projection matrix
+            glm::perspective(FOVy, Ar, nearPlane, farPlane);
+    Mprj[1][1] *= -1;
+
+    ViewPrj = Mprj * Mv; // view-projection matrix
+
+
+	World = glm::translate(glm::mat4(1.0), Pos);
 }
