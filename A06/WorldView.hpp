@@ -25,8 +25,7 @@ glm::mat4 MakeWorldMatrix(glm::vec3 pos, glm::quat rQ, glm::vec3 size) {
 	// orients it according to <rQ>, and scales it according to the sizes
 	// given in vector <size>
 
-    // TODO: key still not inserted in fob, suspect rotation matrix not working
-    // manually evaluating the rotation matrix yields same result
+    // unused manually built rotation matrix - equivalent to glm::mat4(rQ)
     float a = rQ.w;
     float b = rQ.x;
     float c = rQ.y;
@@ -39,7 +38,7 @@ glm::mat4 MakeWorldMatrix(glm::vec3 pos, glm::quat rQ, glm::vec3 size) {
 
 	glm::mat4 M =
             glm::translate(glm::mat4(1.0), pos) *
-            glm::mat4(glm::normalize(rQ)) * // rotation matrix from quaternion
+            glm::mat4(rQ) * // rotation matrix from quaternion
             glm::scale(glm::mat4(1.0), size);
 
     return M;
