@@ -24,11 +24,23 @@ glm::mat4 MakeWorldMatrix(glm::vec3 pos, glm::quat rQ, glm::vec3 size) {
 	// creates and returns a World Matrix that positions the object at <pos>,
 	// orients it according to <rQ>, and scales it according to the sizes
 	// given in vector <size>
+
+    // TODO: key still not inserted in fob, suspect rotation matrix not working
+    // manually evaluating the rotation matrix yields same result
+    float a = rQ.w;
+    float b = rQ.x;
+    float c = rQ.y;
+    float d = rQ.z;
+
+    glm::mat4 R = glm::mat4(1.0f-2*c*c-2*d*d, 2*b*c-2*a*d, 2*b*d+2*a*c, 0.0f,
+                            2.0f*b*c+2*a*d, 1.0f-2*b*b-2*d*d, 2*c*d-2*a*b, 0.0f,
+                            2.0f*b*d-2*a*c, 2.0f*c*d+2*a*b, 1.0f-2*b*b-2*c*c, 0.0f,
+                            0.0f, 0.0f, 0.0f, 1.0f);
+
 	glm::mat4 M =
             glm::translate(glm::mat4(1.0), pos) *
             glm::mat4(glm::normalize(rQ)) * // rotation matrix from quaternion
             glm::scale(glm::mat4(1.0), size);
-    // TODO: key still not inserted in fob, suspect rotation matrix not working
 
-	return M;
+    return M;
 }
