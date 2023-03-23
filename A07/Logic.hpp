@@ -55,14 +55,31 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
     Rot.y += ROT_SPEED * r.y * deltaT;
     Rot.z += ROT_SPEED * r.z * deltaT;
 
-    auto cameraPosition = glm::vec3(Pos.x, Pos.y + camHeight, Pos.z + camDist);
-    glm::mat4 Mv = glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 Mprj = glm::perspective(FOVy, Ar, nearPlane, farPlane);
-    Mprj[1][1] *= -1;
-    ViewPrj = Mprj * Mv;
-
     World = glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
             glm::rotate(glm::mat4(1), Rot.x,glm::vec3(1, 0, 0)) *
             glm::rotate(glm::mat4(1), Rot.y, glm::vec3(0, 1, 0)) *
             glm::rotate(glm::mat4(1), Rot.z, glm::vec3(0, 0, 1));
+
+    float pitch = glm::radians(15.0f);
+    auto cameraPosition = glm::vec3(0.0f);
+    auto cameraPositionHomogeneous = glm::vec4(0.0f);
+    cameraPositionHomogeneous = World *
+            glm::vec4(0.0f, camHeight + camDist * std::sin(pitch), camDist * std::cos(pitch), 1);
+
+    cameraPosition.x = cameraPositionHomogeneous.x;
+    cameraPosition.y = cameraPositionHomogeneous.y;
+    cameraPosition.z = cameraPositionHomogeneous.z;
+
+    auto characterPosition = glm::vec3(0.0f);
+    /*auto characterPositionHomogeneous = glm::vec4(0.0f);
+    characterPositionHomogeneous = World * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    characterPosition.x = characterPositionHomogeneous.x;
+    characterPosition.y = characterPositionHomogeneous.y;
+    characterPosition.z = characterPositionHomogeneous.z + camHeight;*/
+
+    glm::mat4 Mv = glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 Mprj = glm::perspective(FOVy, Ar, nearPlane, farPlane);
+    Mprj[1][1] *= -1;
+    ViewPrj = Mprj * Mv;
 }
