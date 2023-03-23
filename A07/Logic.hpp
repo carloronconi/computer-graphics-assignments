@@ -55,8 +55,8 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
                                          yaw,
                                          glm::vec3(0, 1, 0)) * glm::vec4(0, 0, -1, 1));
 
-    pitch += ROT_SPEED * r.x * deltaT;
-    yaw += ROT_SPEED * r.y * deltaT;
+    pitch += ROT_SPEED * -r.x * deltaT;
+    yaw += ROT_SPEED * -r.y * deltaT;
     roll += ROT_SPEED * r.z * deltaT;
 
     Pos += ux * MOVE_SPEED * m.x * deltaT;
@@ -65,8 +65,8 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
 
     World = glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
             glm::rotate(glm::mat4(1), yaw,glm::vec3(0, 1, 0)) *
-            glm::rotate(glm::mat4(1), pitch, glm::vec3(1, 0, 0)) *
-            glm::rotate(glm::mat4(1), roll, glm::vec3(0, 0, 1));
+            glm::rotate(glm::mat4(1), pitch, glm::vec3(1, 0, 0));
+            //glm::rotate(glm::mat4(1), roll, glm::vec3(0, 0, 1));
 
     float cameraPitch = glm::radians(15.0f);
     auto cameraPosition = glm::vec3(0.0f);
