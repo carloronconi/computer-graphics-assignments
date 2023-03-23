@@ -45,26 +45,34 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
 
 	// To be done in the assignment
 
-    static auto Rot = glm::vec3(0, 0, 0);
+    static float yaw, pitch, roll;
 
-    Pos.x += MOVE_SPEED * m.x * deltaT;
-    Pos.y += MOVE_SPEED * m.y * deltaT;
-    Pos.z += -MOVE_SPEED * m.z * deltaT;
+    glm::vec3 ux = glm::vec3(glm::rotate(glm::mat4(1),
+                                         yaw,
+                                         glm::vec3(0, 1, 0)) * glm::vec4(1, 0, 0, 1));
+    glm::vec3 uy = glm::vec3(0, 1, 0);
+    glm::vec3 uz = glm::vec3(glm::rotate(glm::mat4(1),
+                                         yaw,
+                                         glm::vec3(0, 1, 0)) * glm::vec4(0, 0, -1, 1));
 
-    Rot.x += ROT_SPEED * r.x * deltaT;
-    Rot.y += ROT_SPEED * r.y * deltaT;
-    Rot.z += ROT_SPEED * r.z * deltaT;
+    pitch += ROT_SPEED * r.x * deltaT;
+    yaw += ROT_SPEED * r.y * deltaT;
+    roll += ROT_SPEED * r.z * deltaT;
+
+    Pos += ux * MOVE_SPEED * m.x * deltaT;
+    Pos += uy * MOVE_SPEED * m.y * deltaT;
+    Pos += uz * MOVE_SPEED * m.z * deltaT;
 
     World = glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
-            glm::rotate(glm::mat4(1), Rot.x,glm::vec3(1, 0, 0)) *
-            glm::rotate(glm::mat4(1), Rot.y, glm::vec3(0, 1, 0)) *
-            glm::rotate(glm::mat4(1), Rot.z, glm::vec3(0, 0, 1));
+            glm::rotate(glm::mat4(1), yaw,glm::vec3(0, 1, 0)) *
+            glm::rotate(glm::mat4(1), pitch, glm::vec3(1, 0, 0)) *
+            glm::rotate(glm::mat4(1), roll, glm::vec3(0, 0, 1));
 
-    float pitch = glm::radians(15.0f);
+    float cameraPitch = glm::radians(15.0f);
     auto cameraPosition = glm::vec3(0.0f);
     auto cameraPositionHomogeneous = glm::vec4(0.0f);
     cameraPositionHomogeneous = World *
-            glm::vec4(0.0f, camHeight + camDist * std::sin(pitch), camDist * std::cos(pitch), 1);
+            glm::vec4(0.0f, camHeight + camDist * std::sin(cameraPitch), camDist * std::cos(cameraPitch), 1);
 
     cameraPosition.x = cameraPositionHomogeneous.x;
     cameraPosition.y = cameraPositionHomogeneous.y;
@@ -79,6 +87,7 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
     characterPosition.z = characterPositionHomogeneous.z + camHeight;*/
 
     glm::mat4 Mv = glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f, 1.0f, 0.0f));
+    //glm::mat4 Mv = glm::lookAt(glm::vec3(StartingPosition.x + 5, StartingPosition.y + 5, StartingPosition.z + 5), Pos, glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 Mprj = glm::perspective(FOVy, Ar, nearPlane, farPlane);
     Mprj[1][1] *= -1;
     ViewPrj = Mprj * Mv;
