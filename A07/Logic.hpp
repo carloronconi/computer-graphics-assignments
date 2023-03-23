@@ -66,10 +66,10 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
     World = glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
             glm::rotate(glm::mat4(1), yaw,glm::vec3(0, 1, 0)) *
             glm::rotate(glm::mat4(1), pitch, glm::vec3(1, 0, 0));
-            //glm::rotate(glm::mat4(1), roll, glm::vec3(0, 0, 1));
+            //glm::rotate(glm::mat4(1), roll, glm::vec3(0, 0, 1)); // eliminate roll character movement
 
-    float cameraPitch = glm::radians(15.0f);
-    auto cameraPosition = glm::vec3(0.0f);
+    float cameraPitch = glm::radians(15.0f); // TODO: camera pitch still fixed, what should it depend on?
+    auto cameraPosition = glm::vec3(0.0f); // TODO: how to get camera rotation without character rotation as in assignment requirements?
     auto cameraPositionHomogeneous = glm::vec4(0.0f);
     cameraPositionHomogeneous = World *
             glm::vec4(0.0f, camHeight + camDist * std::sin(cameraPitch), camDist * std::cos(cameraPitch), 1);
