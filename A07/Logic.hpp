@@ -56,5 +56,10 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
     ViewPrj = Mprj * Mv; // view-projection matrix
 
 
-	World = glm::translate(glm::mat4(1.0), Pos);
+    World = glm::translate(glm::mat4(1.0), Pos) *
+            glm::translate(glm::mat4(1),glm::vec3(MOVE_SPEED * m.x * deltaT, MOVE_SPEED * m.y * deltaT, MOVE_SPEED * m.z * deltaT)) *
+            glm::rotate(glm::mat4(1), ROT_SPEED * r.x * deltaT,glm::vec3(1, 0, 0)) *
+            glm::rotate(glm::mat4(1), ROT_SPEED * r.y * deltaT, glm::vec3(0, 1, 0)) *
+            glm::rotate(glm::mat4(1), ROT_SPEED * r.z * deltaT, glm::vec3(0, 0, 1));
+
 }
