@@ -54,24 +54,15 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
     Rot.x += ROT_SPEED * r.x * deltaT;
     Rot.y += ROT_SPEED * r.y * deltaT;
     Rot.z += ROT_SPEED * r.z * deltaT;
-    /*KeyRot = glm::quat(glm::vec3(0, -ROT_SPEED * deltaT * r.y, 0)) *
-             glm::quat(glm::vec3(-ROT_SPEED * deltaT * r.x, 0, 0)) *
-             glm::quat(glm::vec3(0, 0, ROT_SPEED * deltaT * r.z)) *
-             KeyRot;*/
 
-    glm::vec3 cameraPosition = glm::vec3(Pos.x, Pos.y + camHeight, Pos.z + camDist);
-    glm::mat4 Mv = // view matrix
-            glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 Mprj = // projection matrix
-            glm::perspective(FOVy, Ar, nearPlane, farPlane);
+    auto cameraPosition = glm::vec3(Pos.x, Pos.y + camHeight, Pos.z + camDist);
+    glm::mat4 Mv = glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 Mprj = glm::perspective(FOVy, Ar, nearPlane, farPlane);
     Mprj[1][1] *= -1;
-    ViewPrj = Mprj * Mv; // view-projection matrix
+    ViewPrj = Mprj * Mv;
 
-    World = //glm::translate(glm::mat4(1.0), lastPlayerPosition) *
-            //glm::translate(glm::mat4(1),glm::vec3(MOVE_SPEED * m.x * deltaT, MOVE_SPEED * m.y * deltaT, MOVE_SPEED * m.z * deltaT)) *
-            glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
+    World = glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
             glm::rotate(glm::mat4(1), Rot.x,glm::vec3(1, 0, 0)) *
             glm::rotate(glm::mat4(1), Rot.y, glm::vec3(0, 1, 0)) *
             glm::rotate(glm::mat4(1), Rot.z, glm::vec3(0, 0, 1));
-
 }
