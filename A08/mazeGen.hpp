@@ -20,19 +20,8 @@ void Assignment08::createMazeMesh(int row, int col, char **maze) {
     //
     // The example below creates a square, with four vertices and two triangles.
     // It must be deleted and replaced with your code creating the mesh of the maze.
-    /*
-    // Fill array vPos with the positions of the vertices of the mesh
-    vPos.push_back(0.0); vPos.push_back(0.0); vPos.push_back(0.0);	// vertex 0
-    vPos.push_back(1.0); vPos.push_back(0.0); vPos.push_back(0.0);	// vertex 1
-    vPos.push_back(0.0); vPos.push_back(1.0); vPos.push_back(0.0);	// vertex 2
-    vPos.push_back(1.0); vPos.push_back(1.0); vPos.push_back(0.0);	// vertex 3
 
-    // Fill the array vIdx with the indices of the vertices of the triangles
-    vIdx.push_back(0); vIdx.push_back(1); vIdx.push_back(2);	// First triangle
-    vIdx.push_back(1); vIdx.push_back(2); vIdx.push_back(3);	// Second triangle
-    */
-
-    static int vCounter = 0;
+    static int vCounter = 0; // static counter to keep track of highest value of vIdx so far
     for (int r = 0; r < row; ++r) {
         for (int c = 0; c < col; ++c) {
             if (maze[r][c] == '#') createCube(r, c, vCounter, vPos, vIdx);
@@ -53,7 +42,7 @@ void createCube(int i, int j, int& vCounter, std::vector<float>& vPos, std::vect
     createVertex(i + 1, j + 1, 0, vPos);
     createVertex(i + 1, j + 1, 1, vPos);
 
-    // fill triangles
+    // fill triangles following screenshot in project files
     createTriangle(vCounter + 0, vCounter + 1, vCounter + 2, vIdx);
     createTriangle(vCounter + 1, vCounter + 2, vCounter + 3, vIdx);
     createTriangle(vCounter + 4, vCounter + 5, vCounter + 6, vIdx);
@@ -75,6 +64,7 @@ void createCube(int i, int j, int& vCounter, std::vector<float>& vPos, std::vect
 }
 
 void createSquare(int i, int j, int& vCounter, std::vector<float>& vPos, std::vector<int>& vIdx) {
+    // similar to cube but with fewer vertices
     createVertex(i, j, 0, vPos);
     createVertex(i + 1, j, 0, vPos);
     createVertex(i, j + 1, 0, vPos);
@@ -87,7 +77,9 @@ void createSquare(int i, int j, int& vCounter, std::vector<float>& vPos, std::ve
 }
 
 void createVertex(int i, int j, int k, std::vector<float>& vPos) {
-    vPos.push_back(i * 1.0); vPos.push_back(j * 1.0); vPos.push_back(k * 1.0);
+    // indexes are switched to make the lay the maze horizontal
+    // and shifted to spawn camera above and centered
+    vPos.push_back((j - 5) * 1.0); vPos.push_back((k - 5) * 1.0); vPos.push_back((i - 10) * 1.0);
 }
 
 void createTriangle(int i, int j, int k, std::vector<int>& vIdx) {
