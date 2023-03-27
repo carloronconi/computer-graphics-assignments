@@ -1,4 +1,5 @@
-void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx);
+void createCube(int i, int j, int& vCounter, std::vector<float>& vPos, std::vector<int>& vIdx);
+void createSquare(int i, int j, int& vCounter, std::vector<float>& vPos, std::vector<int>& vIdx);
 void createVertex(int i, int j, int k, std::vector<float>& vPos);
 void createTriangle(int i, int j, int k, std::vector<int>& vIdx);
 
@@ -31,17 +32,17 @@ void Assignment08::createMazeMesh(int row, int col, char **maze) {
     vIdx.push_back(1); vIdx.push_back(2); vIdx.push_back(3);	// Second triangle
     */
 
+    static int vCounter = 0;
     for (int r = 0; r < row; ++r) {
         for (int c = 0; c < col; ++c) {
-            if (maze[r][c] == '#') createCube(r, c, vPos, vIdx);
+            if (maze[r][c] == '#') createCube(r, c, vCounter, vPos, vIdx);
+            else if (maze[r][c] == ' ') createSquare(r, c, vCounter, vPos, vIdx);
         }
     }
 
 }
 
-void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) {
-    static int totalTriangles = 0;
-
+void createCube(int i, int j, int& vCounter, std::vector<float>& vPos, std::vector<int>& vIdx) {
     // create 8 vertices of a cube
     createVertex(i, j, 0, vPos);
     createVertex(i, j, 1, vPos);
@@ -53,24 +54,36 @@ void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) 
     createVertex(i + 1, j + 1, 1, vPos);
 
     // fill triangles
-    createTriangle(totalTriangles + 0, totalTriangles + 1, totalTriangles + 2, vIdx);
-    createTriangle(totalTriangles + 1, totalTriangles + 2, totalTriangles + 3, vIdx);
-    createTriangle(totalTriangles + 4, totalTriangles + 5, totalTriangles + 6, vIdx);
-    createTriangle(totalTriangles + 5, totalTriangles + 6, totalTriangles + 7, vIdx);
+    createTriangle(vCounter + 0, vCounter + 1, vCounter + 2, vIdx);
+    createTriangle(vCounter + 1, vCounter + 2, vCounter + 3, vIdx);
+    createTriangle(vCounter + 4, vCounter + 5, vCounter + 6, vIdx);
+    createTriangle(vCounter + 5, vCounter + 6, vCounter + 7, vIdx);
 
-    createTriangle(totalTriangles + 0, totalTriangles + 4, totalTriangles + 6, vIdx);
-    createTriangle(totalTriangles + 0, totalTriangles + 2, totalTriangles + 6, vIdx);
+    createTriangle(vCounter + 0, vCounter + 4, vCounter + 6, vIdx);
+    createTriangle(vCounter + 0, vCounter + 2, vCounter + 6, vIdx);
 
-    createTriangle(totalTriangles + 0, totalTriangles + 1, totalTriangles + 4, vIdx);
-    createTriangle(totalTriangles + 1, totalTriangles + 4, totalTriangles + 5, vIdx);
+    createTriangle(vCounter + 0, vCounter + 1, vCounter + 4, vIdx);
+    createTriangle(vCounter + 1, vCounter + 4, vCounter + 5, vIdx);
 
-    createTriangle(totalTriangles + 2, totalTriangles + 6, totalTriangles + 7, vIdx);
-    createTriangle(totalTriangles + 2, totalTriangles + 3, totalTriangles + 7, vIdx);
+    createTriangle(vCounter + 2, vCounter + 6, vCounter + 7, vIdx);
+    createTriangle(vCounter + 2, vCounter + 3, vCounter + 7, vIdx);
 
-    createTriangle(totalTriangles + 1, totalTriangles + 5, totalTriangles + 7, vIdx);
-    createTriangle(totalTriangles + 1, totalTriangles + 3, totalTriangles + 7, vIdx);
+    createTriangle(vCounter + 1, vCounter + 5, vCounter + 7, vIdx);
+    createTriangle(vCounter + 1, vCounter + 3, vCounter + 7, vIdx);
 
-    totalTriangles += 8;
+    vCounter += 8;
+}
+
+void createSquare(int i, int j, int& vCounter, std::vector<float>& vPos, std::vector<int>& vIdx) {
+    createVertex(i, j, 0, vPos);
+    createVertex(i + 1, j, 0, vPos);
+    createVertex(i, j + 1, 0, vPos);
+    createVertex(i + 1, j + 1, 0, vPos);
+
+    createTriangle(vCounter + 0, vCounter + 1, vCounter + 2, vIdx);
+    createTriangle(vCounter + 1, vCounter + 2, vCounter + 3, vIdx);
+
+    vCounter += 4;
 }
 
 void createVertex(int i, int j, int k, std::vector<float>& vPos) {
