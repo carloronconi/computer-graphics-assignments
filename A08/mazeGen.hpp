@@ -1,5 +1,5 @@
-void createCube(int i, int j, std::vector<float> vPos, std::vector<int> vIdx);
-void createVertex(int i, int j, int i1, std::vector<float> vPos);
+void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx);
+void createVertex(int i, int j, int k, std::vector<float>& vPos);
 
 void Assignment08::createMazeMesh(int row, int col, char **maze) {
     // The procedure gets in input the number of rows <row> of the maze, and the number of columns <col>
@@ -32,7 +32,7 @@ void Assignment08::createMazeMesh(int row, int col, char **maze) {
     createCube(0, 0, vPos, vIdx);
 }
 
-void createCube(int i, int j, std::vector<float> vPos, std::vector<int> vIdx) {
+void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) {
     // create 8 vertices of a cube
     createVertex(i, j, 0, vPos);
     createVertex(i, j, 1, vPos);
@@ -51,8 +51,8 @@ void createCube(int i, int j, std::vector<float> vPos, std::vector<int> vIdx) {
     }
 }
 
-void createVertex(int i, int j, int k, std::vector<float> vPos) {
-    vPos.push_back(i); vPos.push_back(j); vPos.push_back(k);
+void createVertex(int i, int j, int k, std::vector<float>& vPos) {
+    vPos.push_back(i * 1.0); vPos.push_back(j * 1.0); vPos.push_back(k * 1.0);
 }
 
 
