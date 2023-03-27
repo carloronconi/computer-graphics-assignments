@@ -1,5 +1,6 @@
 void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx);
 void createVertex(int i, int j, int k, std::vector<float>& vPos);
+void createTriangle(int i, int j, int k, std::vector<int>& vIdx);
 
 void Assignment08::createMazeMesh(int row, int col, char **maze) {
     // The procedure gets in input the number of rows <row> of the maze, and the number of columns <col>
@@ -43,17 +44,32 @@ void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) 
     createVertex(i + 1, j + 1, 0, vPos);
     createVertex(i + 1, j + 1, 1, vPos);
     // fill triangles
-    for (int k = 0; k < 12; ++k) {
-        int k0 = k % 8;
-        int k1 = (k + 1) % 8;
-        int k2 = (k + 2) % 8;
-        vIdx.push_back(k0); vIdx.push_back(k1); vIdx.push_back(k2);
-    }
+    createTriangle(0, 1, 2, vIdx);
+    createTriangle(1, 2, 3, vIdx);
+    createTriangle(4, 5, 6, vIdx);
+    createTriangle(5, 6, 7, vIdx);
+
+    createTriangle(0, 4, 6, vIdx);
+    createTriangle(0, 2, 6, vIdx);
+
+    createTriangle(0, 1, 4, vIdx);
+    createTriangle(1, 4, 5, vIdx);
+
+    createTriangle(2, 6, 7, vIdx);
+    createTriangle(2, 3, 7, vIdx);
+
+    createTriangle(1, 5, 7, vIdx);
+    createTriangle(1, 3, 7, vIdx);
 }
 
 void createVertex(int i, int j, int k, std::vector<float>& vPos) {
     vPos.push_back(i * 1.0); vPos.push_back(j * 1.0); vPos.push_back(k * 1.0);
 }
+
+void createTriangle(int i, int j, int k, std::vector<int>& vIdx) {
+    vIdx.push_back(i); vIdx.push_back(j); vIdx.push_back(k);
+}
+
 
 
 
