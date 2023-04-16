@@ -1,10 +1,15 @@
 using namespace glm;
 using namespace std;
 
-void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx);
+void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx, int row, int col, char **maze);
 void createSquare(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx);
 int createVertex(int i, int j, int k, std::vector<float>& vPos);
 void createTriangle(int i, int j, int k, std::vector<int>& vIdx);
+
+char getRightCharacter(char ** maze, int row, int col, int i, int j);
+char getLeftCharacter(char ** maze, int row, int col, int i, int j);
+char getUpCharacter(char ** maze, int row, int col, int i, int j);
+char getDownCharacter(char ** maze, int row, int col, int i, int j);
 
 void Assignment08::createMazeMesh(int row, int col, char **maze) {
     // The procedure gets in input the number of rows <row> of the maze, and the number of columns <col>
@@ -26,14 +31,14 @@ void Assignment08::createMazeMesh(int row, int col, char **maze) {
 
     for (int r = 0; r < row; ++r) {
         for (int c = 0; c < col; ++c) {
-            if (maze[r][c] == '#') createCube(r, c, vPos, vIdx);
+            if (maze[r][c] == '#') createCube(r, c, vPos, vIdx, row, col, maze);
             else if (maze[r][c] == ' ') createSquare(r, c, vPos, vIdx);
         }
     }
 
 }
 
-void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) {
+void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx, int row, int col, char **maze) {
     // create 8 vertices of a cube
     int v0 = createVertex(i, j, 0, vPos);
     int v1 = createVertex(i, j, 1, vPos);
@@ -45,22 +50,53 @@ void createCube(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) 
     int v7 = createVertex(i + 1, j + 1, 1, vPos);
 
     // fill triangles following screenshot in project files
-    createTriangle(v0, v1, v2, vIdx);
-    createTriangle(v1, v2, v3, vIdx);
-    createTriangle(v4, v5, v6, vIdx);
-    createTriangle(v5, v6, v7, vIdx);
+    if (getUpCharacter(maze, row, col, i, j) != '#') {
+        createTriangle(v0, v1, v2, vIdx);
+        createTriangle(v1, v2, v3, vIdx);
+    }
 
-    createTriangle(v0, v4, v6, vIdx);
-    createTriangle(v0, v2, v6, vIdx);
+    if (getDownCharacter(maze, row, col, i, j) != '#') {
+        createTriangle(v4, v5, v6, vIdx);
+        createTriangle(v5, v6, v7, vIdx);
+    }
 
-    createTriangle(v0, v1, v4, vIdx);
-    createTriangle(v1, v4, v5, vIdx);
+    // don't create lower face of the cube
+    // createTriangle(v0, v4, v6, vIdx);
+    // createTriangle(v0, v2, v6, vIdx);
 
-    createTriangle(v2, v6, v7, vIdx);
-    createTriangle(v2, v3, v7, vIdx);
+    if (getLeftCharacter(maze, row, col, i, j) != '#') {
+        createTriangle(v0, v1, v4, vIdx);
+        createTriangle(v1, v4, v5, vIdx);
+    }
 
+    if (getRightCharacter(maze, row, col, i, j) != '#') {
+        createTriangle(v2, v6, v7, vIdx);
+        createTriangle(v2, v3, v7, vIdx);
+    }
+
+    // always create upper face of the cube
     createTriangle(v1, v5, v7, vIdx);
     createTriangle(v1, v3, v7, vIdx);
+}
+
+char getRightCharacter(char ** maze, int row, int col, int i, int j) {
+    if (i >= row - 1) return ' ';
+    return maze[i + 1][j];
+}
+
+char getLeftCharacter(char ** maze, int row, int col, int i, int j) {
+    if (i <= 0) return ' ';
+    return maze[i - 1][j];
+}
+
+char getDownCharacter(char ** maze, int row, int col, int i, int j) {
+    if (j >= col - 1) return ' ';
+    return maze[i][j + 1];
+}
+
+char getUpCharacter(char ** maze, int row, int col, int i, int j) {
+    if (j <= 0) return ' ';
+    return maze[i][j - 1];
 }
 
 void createSquare(int i, int j, std::vector<float>& vPos, std::vector<int>& vIdx) {
