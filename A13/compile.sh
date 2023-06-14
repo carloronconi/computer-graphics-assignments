@@ -1,0 +1,1 @@
+glslc shaders/BlinnShader.frag -o shaders/BlinnFrag.spv
