@@ -106,12 +106,29 @@ void Assignment14::createFunctionMesh(std::vector<Vertex> &vDef, std::vector<uin
         for (int z = 0; z < edgeSize - 1; ++z) {
             int upperLeft = edgeSize * x + z; // index of upper left corner of triangle
             int upperRight = upperLeft + 1;
-            int lowerLeft = edgeSize * (x + 1); // index of lower left corner of triangle
+            int lowerLeft = edgeSize * (x + 1) + z; // index of lower left corner of triangle
             int lowerRight = lowerLeft + 1;
+            /*
+            std::cout << std::setprecision(2) << std::fixed
+            << "(" << std::setw(4) << upperLeft << ")"
+            << std::setw(6) << vDef[upperLeft].pos.x
+            << std::setw(6) << vDef[upperLeft].pos.y
+            << std::setw(6) << vDef[upperLeft].pos.z << " |"; */
             vIdx.push_back(upperLeft); vIdx.push_back(upperRight); vIdx.push_back(lowerLeft);
             vIdx.push_back(upperRight); vIdx.push_back(lowerLeft); vIdx.push_back(lowerRight);
         }
+        // std::cout << "\n";
     }
+
+    /*
+    int conta = 1;
+    for (int i : vIdx) {
+        std::cout << i << " ";
+        if (conta % 3 == 0) std::cout << "|";
+        if (conta % 60 == 0) std::cout << "\n";
+        conta++;
+    }
+    */
 }
 
 void Assignment14::createCylinderMesh(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx) {
