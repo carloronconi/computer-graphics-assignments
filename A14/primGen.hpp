@@ -65,10 +65,12 @@ glm::vec3 computeSurfaceNorm(glm::vec3 pos) {
         crossprod = [a2b3 - a3b2 = cosx * cosz, a3b1 - a1b3 = -1, a1b2 - a2b1 = -sinx * sinz]
                   = [cosx * cosz, -1, -sinx * sinz]
      */
-    return {
-        cos(pos.x) * cos(pos.z),
-        -1,
-        -sin(pos.x) * sin(pos.z)};
+
+    // note: norm must be normalized and is multiplied by -1 to get the other side of the surface norms
+    return glm::normalize(glm::vec3(
+            -cos(pos.x) * cos(pos.z),
+            1.0,
+            sin(pos.x) * sin(pos.z)));
 }
 
 void Assignment14::createFunctionMesh(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx) {
