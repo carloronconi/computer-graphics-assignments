@@ -133,16 +133,62 @@ void Assignment14::createFunctionMesh(std::vector<Vertex> &vDef, std::vector<uin
     */
 }
 
+/**
+ * creates a disc centered on and normal to the y-axis
+ * @param y height coordinate at which to create the disc (norm direction of points is determined by y's sign)
+ * @param r radius of the disc
+ * @param sides sides of the figure approximating a circle
+ */
+void createDisc(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx, float y, float r, int sides, bool normOut = false) {
+    int startIndex = (int) vDef.size();
+    glm::vec3 norm = {0, abs(y) / y, 0}; // norm is the same for all points of the disc if !normOut
+
+    vDef.push_back({{0.0f, y, 0.0f}, norm}); // vDef[0] is the origin of the disc
+
+
+    for (int i = 0; i < sides; ++i) {
+        auto x = (float) r * cos(2 * M_PI * ((float)i) / sides);
+        auto z = (float) r * sin(2 * M_PI * ((float)i) / sides);
+        if (normOut) norm = glm::normalize(glm::vec3(x, 0.0, z));
+        vDef.push_back({{x, y, z}, norm});
+    }
+
+    if (normOut) return;
+    for (int i = 1; i < sides; ++i) {
+        vIdx.push_back(startIndex); vIdx.push_back(startIndex + i); vIdx.push_back(startIndex + i + 1);
+    }
+    vIdx.push_back(startIndex); vIdx.push_back(startIndex + 1); vIdx.push_back(startIndex + sides);
+
+}
+
+/**
+ * creates a tube centered on and normal to the y-axis
+ * @param y1 height coordinate at which the tube starts
+ * @param y2 height coordinate at which th tube ends
+ * @param r radius of the tube
+ * @param sides sides of the figure approximating a circle
+ */
+void createTube(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx, float y1, float y2, float r, int sides) {
+    for (int i = 1; i < sides; ++i) { // 1 to 19
+        vIdx.push_back(i); vIdx.push_back(i + 1); vIdx.push_back(i + sides + 1);
+        vIdx.push_back(i + sides + 2); vIdx.push_back(i + 1); vIdx.push_back(i + sides + 1);
+    }
+    // last 2
+    vIdx.push_back(sides); vIdx.push_back(1); vIdx.push_back(2 * sides + 1);
+    vIdx.push_back(1); vIdx.push_back(sides + 2); vIdx.push_back(2 * sides + 1);
+}
+
 void Assignment14::createCylinderMesh(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx) {
 	// The procedure fills array vPos with the positions of the vertices and of the normal vectors of the mesh
 	// The procedures also fill the array vIdx with the indices of the vertices of the triangles
 	// The primitive built here is a cylinder, with radius 1, and height 2, centered in the origin.
-	
-	// Fill array vPos with the positions of the vertices of the mesh
-	vDef.push_back({{1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}});	// vertex 0 - Position and Normal
-	vDef.push_back({{0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}});	// vertex 1 - Position and Normal
-	vDef.push_back({{1.0f, 1.0f, 0.1f}, {-0.5f, 0.0f, 0.866f}});// vertex 2 - Position and Normal
 
-	// Fill the array vIdx with the indices of the vertices of the triangles
-	vIdx.push_back(0); vIdx.push_back(1); vIdx.push_back(2);	// First triangle
+    int sides = 60;
+    // the discs are created twice to have different norms for the faces vs the sides
+    createDisc(vDef, vIdx, 1.0, 1.0, sides, true);
+    createDisc(vDef, vIdx, -1.0, 1.0, sides, true);
+    createTube(vDef, vIdx, 1.0, -1.0, 1.0, sides);
+    createDisc(vDef, vIdx, 1.0, 1.0, sides);
+    createDisc(vDef, vIdx, -1.0, 1.0, sides);
+
 }
