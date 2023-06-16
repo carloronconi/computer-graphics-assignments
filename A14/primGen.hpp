@@ -86,8 +86,12 @@ void Assignment14::createFunctionMesh(std::vector<Vertex> &vDef, std::vector<uin
 
     // create the xz range of values
     std::vector<float> range;
+    int count = 0; // makes sure range has size 60 avoiding float approx issues
     for (float i = start; i < end; i+= pace) {
         range.push_back(i);
+
+        if (count < edgeSize - 1) count++;
+        else break;
     }
 
     for (float x : range) {
