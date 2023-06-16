@@ -3,7 +3,7 @@ void Assignment15::createBoxMesh(std::vector<Vertex> &vDef, std::vector<uint32_t
 	// The primitive built here is a box centered in the origin, with proportions respecting the texture.
 
 	// The procedure fills array vPos with the positions of the vertices and of the normal vectors of the mesh
-	vDef.push_back({{0,0,0}, {0,0,1}, {0,0}});	// vertex 0 - Position, Normal and uv
+	vDef.push_back({{0,0,0}, {0,0,1}, {95.0 / 1024.0, 95.0 / 512.0}});	// vertex 0 - Position, Normal and uv
 	vDef.push_back({{1,0,0}, {0,0,1}, {1,0}});	// vertex 1 - Position and Normal
 	vDef.push_back({{0,1,0}, {0,0,1}, {0,1}});	// vertex 2 - Position and Normal
 	vDef.push_back({{1,1,0}, {0,0,1}, {1,1}});// vertex 3 - Position and Normal
