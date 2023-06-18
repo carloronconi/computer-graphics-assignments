@@ -3,7 +3,8 @@
  * Because the box is centered in the origin, we know that the coordinate of each point will either be
  * + or - a value (eg horizontal = 1.16 -> all points either have z = +1.16 or z = -1.16)
  */
-void createRectangleFace(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx, glm::vec3 norm, glm::vec3 boxDimensions, glm::vec3 uv) {
+void createRectangleFace(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx, glm::vec3 norm,
+                         glm::vec3 boxDimensions, glm::vec2 lowUV, glm::vec2 pixels, float scale) {
 
     int fixedIndex;
     float fixedValue;
@@ -26,7 +27,13 @@ void createRectangleFace(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx,
             pos[variableIndices[1]] = j * boxDimensions[variableIndices[1]];
 
             if (firstVIdx == -1) firstVIdx = (int)vDef.size();
-            vDef.push_back({pos, norm, uv});
+
+            //uv coords of the lowest corner of the rectangle are passed, others are deducted from the dimensions of the box
+            float u = (i > 0) ? lowUV.x + boxDimensions[variableIndices[0]] * scale : lowUV.x;
+            u = u / pixels.x;
+            float v = (j > 0) ? lowUV.y + boxDimensions[variableIndices[1]] * scale : lowUV.y;
+            v = v / pixels.y;
+            vDef.push_back({pos, norm, {u, v}});
         }
     }
 
@@ -47,14 +54,15 @@ void Assignment15::createBoxMesh(std::vector<Vertex> &vDef, std::vector<uint32_t
      *
      * other coordinates written onn the image TBs_20140623_1_02-annotated.png
      */
-    glm::vec3 boxDim = {0.32, 1.08, 1.16};
+    float scale = 300.0;
+    glm::vec3 boxDim = {95.0 / scale, 324.0 / scale, 349.0 / scale};
 
-    createRectangleFace(vDef, vIdx, {1.0, 0.0, 0.0}, boxDim, {0, 0, 0});
-    createRectangleFace(vDef, vIdx, {-1.0, 0.0, 0.0}, boxDim, {0, 0, 0});
-    createRectangleFace(vDef, vIdx, {0.0, 1.0, 0.0}, boxDim, {0, 0, 0});
-    createRectangleFace(vDef, vIdx, {0.0, -1.0, 0.0}, boxDim, {0, 0, 0});
-    createRectangleFace(vDef, vIdx, {0.0, 0.0, 1.0}, boxDim, {0, 0, 0});
-    createRectangleFace(vDef, vIdx, {0.0, 0.0, -1.0}, boxDim, {0, 0, 0});
+    createRectangleFace(vDef, vIdx, {1.0, 0.0, 0.0}, boxDim, {95.0, 95.0}, {1024.0, 512.0}, scale);
+    // createRectangleFace(vDef, vIdx, {-1.0, 0.0, 0.0}, boxDim, {541.0, 95.0}, {1024.0, 512.0}, scale);
+    //createRectangleFace(vDef, vIdx, {0.0, 1.0, 0.0}, boxDim, {0, 0, 0});
+    //createRectangleFace(vDef, vIdx, {0.0, -1.0, 0.0}, boxDim, {0, 0, 0});
+    //createRectangleFace(vDef, vIdx, {0.0, 0.0, 1.0}, boxDim, {0, 0, 0});
+    //createRectangleFace(vDef, vIdx, {0.0, 0.0, -1.0}, boxDim, {0, 0, 0});
 
 }
 
