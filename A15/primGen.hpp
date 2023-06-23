@@ -67,17 +67,68 @@ void Assignment15::createBoxMesh(std::vector<Vertex> &vDef, std::vector<uint32_t
 }
 
 #define M_PI 3.141595f
+/**
+ * creates a disc centered on and normal to the y-axis
+ * @param y height coordinate at which to create the disc (norm direction of points is determined by y's sign)
+ * @param r radius of the disc
+ * @param sides sides of the figure approximating a circle
+ */
+void createDisc(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx, float y, float r, int sides, bool normOut = false) {
+    int startIndex = (int) vDef.size();
+    glm::vec3 norm = {0, abs(y) / y, 0}; // norm is the same for all points of the disc if !normOut
+
+    vDef.push_back({{0.0f, y, 0.0f}, norm}); // vDef[0] is the origin of the disc
+
+
+    for (int i = 0; i < sides; ++i) {
+        auto x = (float) r * cos(2 * M_PI * ((float)i) / sides);
+        auto z = (float) r * sin(2 * M_PI * ((float)i) / sides);
+        if (normOut) norm = glm::normalize(glm::vec3(x, 0.0, z));
+        vDef.push_back({{x, y, z}, norm});
+    }
+
+    if (normOut) return;
+    for (int i = 1; i < sides; ++i) {
+        vIdx.push_back(startIndex); vIdx.push_back(startIndex + i); vIdx.push_back(startIndex + i + 1);
+    }
+    vIdx.push_back(startIndex); vIdx.push_back(startIndex + 1); vIdx.push_back(startIndex + sides);
+
+}
+
+/**
+ * creates a disc of the unitary-radius sphere of n vertices at the specified height for which the radius is computed based on the height
+ * @param vDef vertices vector
+ * @param h height
+ * @param n number of points in the disc
+ */
+void createVertexDisc(std::vector<Vertex> &vDef, float h, int n) {
+    float r = sqrt(1.0 - pow(h, 2.0)); // compute the radius of the disc using Pythagoras' theorem
+
+    for (int i = 0; i < n; ++i) {
+        auto x = (float) r * cos(2 * M_PI * ((float)i) / n);
+        auto z = (float) r * sin(2 * M_PI * ((float)i) / n);
+        glm::vec3 pos = {x, h, z};
+        glm::vec3 norm = glm::normalize(pos); // the norm is the same as the pos for an origin-centered sphere!
+        auto u = (float) (0.5 + ( (atan2(z, x)) / (2 * M_PI) ));
+        auto v = (float) (0.5 + ( (asin(h)) / M_PI ));
+        vDef.push_back({pos, norm, {u, v}});
+    }
+}
+
 void Assignment15::createSphereMesh(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx) {
 	// The primitive built here is a sphere of radius 1, centered in the origin, on which the Mars texture is applied seamless.
-	
-	// The procedure fills array vPos with the positions of the vertices and of the normal vectors of the mesh
-	vDef.push_back({{0,0,0}, {0,0,1}, {0,0}});	// vertex 0 - Position, Normal and uv
-	vDef.push_back({{1,0,0}, {0,0,1}, {1,0}});	// vertex 1 - Position and Normal
-	vDef.push_back({{0,1,0}, {0,0,1}, {0,1}});	// vertex 2 - Position and Normal
-	vDef.push_back({{1,1,0}, {0,0,1}, {1,1}});// vertex 3 - Position and Normal
+    int nDisc = 6;
+    int nHeight = 6;
 
-	// The procedures also fill the array vIdx with the indices of the vertices of the triangles
-	vIdx.push_back(0); vIdx.push_back(1); vIdx.push_back(2);	// First triangle
-	vIdx.push_back(1); vIdx.push_back(2); vIdx.push_back(3);	// Second triangle
+	vDef.push_back({{0,1,0}, {0,1,0}, {0,1}});	// North Pole
+    for (int i = 0; i < nHeight; ++i) {
+        // createVertexDisc with nHeight different heights from +1 to -1
+    }
+    createVertexDisc(vDef, 0.7, nDisc);
+
+    for (int i = 0; i < nDisc - 1; ++i) {
+        vIdx.push_back(0); vIdx.push_back(i + 1); vIdx.push_back(i + 2);	// First triangle
+    }
+    vIdx.push_back(0) ; vIdx.push_back(1); vIdx.push_back(nDisc);
 }
 
