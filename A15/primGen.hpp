@@ -4,14 +4,14 @@
  * + or - a value (eg horizontal = 1.16 -> all points either have z = +1.16 or z = -1.16)
  */
 void createRectangleFace(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx, glm::vec3 norm,
-                         glm::vec3 boxDimensions, glm::vec2 lowUV, glm::vec2 pixels, float scale) {
+                         glm::vec3 boxDimensions/*, glm::vec2 lowUV*/, glm::vec2 pixels, float scale) {
 
     int fixedIndex;
     float fixedValue;
     for (int i : {0, 1, 2}) {
         if (norm[i] != 0){
             fixedIndex = i;
-            fixedValue = norm[i] * boxDimensions[i];
+            fixedValue = norm[i] * boxDimensions[i] / scale;
         }
     }
 
@@ -23,17 +23,18 @@ void createRectangleFace(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx,
         for (float j : {1.0f, -1.0f}) {
             glm::vec3 pos = {};
             pos[fixedIndex] = fixedValue;
-            pos[variableIndices[0]] = i * boxDimensions[variableIndices[0]];
-            pos[variableIndices[1]] = j * boxDimensions[variableIndices[1]];
+            pos[variableIndices[0]] = i * boxDimensions[variableIndices[0]] / scale;
+            pos[variableIndices[1]] = j * boxDimensions[variableIndices[1]] / scale;
 
             if (firstVIdx == -1) firstVIdx = (int)vDef.size();
 
+            /**
+             * attempt to automatically compute UV
+             */
             //uv coords of the lowest corner of the rectangle are passed, others are deducted from the dimensions of the box
-            float u = (i > 0) ? lowUV.x + boxDimensions[variableIndices[0]] * scale : lowUV.x;
-            u = u / pixels.x;
-            float v = (j > 0) ? lowUV.y + boxDimensions[variableIndices[1]] * scale : lowUV.y;
-            v = v / pixels.y;
-            vDef.push_back({pos, norm, {u, v}});
+            //float u = (i > 0) ? (lowUV.x + boxDimensions[variableIndices[1]]) / pixels.x : lowUV.x / pixels.x;
+            //float v = (j > 0) ? (lowUV.y + boxDimensions[variableIndices[0]]) / pixels.y : lowUV.y / pixels.y;
+            vDef.push_back({pos, norm, /*{u, v}*/{}});
         }
     }
 
@@ -52,17 +53,42 @@ void Assignment15::createBoxMesh(std::vector<Vertex> &vDef, std::vector<uint32_t
      * vertical = 324 -> 324/300 = 1.08 (y)
      * short = 95 -> 95/300 = 0.32 (x)
      *
-     * other coordinates written onn the image TBs_20140623_1_02-annotated.png
+     * other coordinates written on the image TBs_20140623_1_02-annotated.png
      */
     float scale = 300.0;
-    glm::vec3 boxDim = {95.0 / scale, 324.0 / scale, 349.0 / scale};
+    glm::vec3 boxDim = {95.0, 324.0, 349.0};
+    glm::vec2 pixels = {1024.0, 512.0};
 
-    createRectangleFace(vDef, vIdx, {1.0, 0.0, 0.0}, boxDim, {95.0, 95.0}, {1024.0, 512.0}, scale);
-    // createRectangleFace(vDef, vIdx, {-1.0, 0.0, 0.0}, boxDim, {541.0, 95.0}, {1024.0, 512.0}, scale);
-    //createRectangleFace(vDef, vIdx, {0.0, 1.0, 0.0}, boxDim, {0, 0, 0});
-    //createRectangleFace(vDef, vIdx, {0.0, -1.0, 0.0}, boxDim, {0, 0, 0});
-    //createRectangleFace(vDef, vIdx, {0.0, 0.0, 1.0}, boxDim, {0, 0, 0});
-    //createRectangleFace(vDef, vIdx, {0.0, 0.0, -1.0}, boxDim, {0, 0, 0});
+    createRectangleFace(vDef, vIdx, {1.0, 0.0, 0.0}, boxDim, pixels, scale);
+    vDef[0].UV = {95.0 / 1024.0, 95.0 / 512.0};
+    vDef[1].UV = {444.0 / 1024.0, 95.0 / 512.0};
+    vDef[2].UV = {95.0 / 1024.0, 419.0 / 512.0};
+    vDef[3].UV = {444.0 / 1024.0, 419.0 / 512.0};
+    createRectangleFace(vDef, vIdx, {-1.0, 0.0, 0.0}, boxDim, pixels, scale);
+    vDef[4].UV = {893.0 / 1024.0, 95.0 / 512.0};
+    vDef[5].UV = {541.0 / 1024.0, 95.0 / 512.0};
+    vDef[6].UV = {893.0 / 1024.0, 419.0 / 512.0};
+    vDef[7].UV = {541.0 / 1024.0, 419.0 / 512.0};
+    createRectangleFace(vDef, vIdx, {0.0, 1.0, 0.0}, boxDim, pixels, scale);
+    vDef[8].UV = {95.0 / 1024.0, 95.0 / 512.0};
+    vDef[9].UV = {444.0 / 1024.0, 95.0 / 512.0};
+    vDef[10].UV = {95.0 / 1024.0, 0.0 / 512.0};
+    vDef[11].UV = {444.0 / 1024.0, 0.0 / 512.0};
+    createRectangleFace(vDef, vIdx, {0.0, -1.0, 0.0}, boxDim, pixels, scale);
+    vDef[12].UV = {444.0 / 1024.0, 419.0 / 512.0};
+    vDef[13].UV = {95.0 / 1024.0, 419.0 / 512.0};
+    vDef[14].UV = {444.0 / 1024.0, 512.0 / 512.0};
+    vDef[15].UV = {95.0 / 1024.0, 512.0 / 512.0};
+    createRectangleFace(vDef, vIdx, {0.0, 0.0, 1.0}, boxDim, pixels, scale);
+    vDef[16].UV = {95.0 / 1024.0, 95.0 / 512.0};
+    vDef[17].UV = {95.0 / 1024.0, 419.0 / 512.0};
+    vDef[18].UV = {0.0 / 1024.0, 95.0 / 512.0};
+    vDef[19].UV = {0.0 / 1024.0, 419.0 / 512.0};
+    createRectangleFace(vDef, vIdx, {0.0, 0.0, -1.0}, boxDim, pixels, scale);
+    vDef[20].UV = {444.0 / 1024.0, 95.0 / 512.0};
+    vDef[21].UV = {444.0 / 1024.0, 419.0 / 512.0};
+    vDef[22].UV = {541.0 / 1024.0, 95.0 / 512.0};
+    vDef[23].UV = {541.0 / 1024.0, 419.0 / 512.0};
 
 }
 
