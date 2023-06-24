@@ -97,10 +97,11 @@ void Assignment15::createBoxMesh(std::vector<Vertex> &vDef, std::vector<uint32_t
  * creates a disc of the unitary-radius sphere of n vertices at the specified height for which the radius is computed based on the height
  * @param vDef vertices vector
  * @param h height
- * @param n number of points in the disc
+ * @param n number of points in the disc, must be odd so that using n - 1 (even) the [n/2] point has u = 1
  */
-void createVertexDisc(std::vector<Vertex> &vDef, float h, int n) {
+void createVertexDisc(std::vector<Vertex> &vDef, float h, int nDisc) {
     float r = sqrt(1.0 - pow(h, 2.0)); // compute the radius of the disc using Pythagoras' theorem
+    int n = nDisc - 1;
 
     for (int i = 0; i < n; ++i) {
         auto x = (float) r * cos(2 * M_PI * ((float)i) / n);
@@ -109,13 +110,20 @@ void createVertexDisc(std::vector<Vertex> &vDef, float h, int n) {
         glm::vec3 norm = glm::normalize(pos); // the norm is the same as the pos for an origin-centered sphere!
         auto u = (float) 1.0f - (0.5 + ( (atan2(z, x)) / (2 * M_PI) ));
         auto v = (float) 1.0f - (0.5 + ( (asin(h)) / M_PI ));
+
+        if (i == n / 2) { // overlap the point with another one with same pos but 0 coord instead of 0.999 to fix wrapping
+            vDef.push_back({pos, norm, {0.0, v}});
+            std::cout << 0.0 << " " << v << "\n";
+        }
+
         vDef.push_back({pos, norm, {u, v}});
+        std::cout << u << " " << v << "\n";
     }
 }
 
 void Assignment15::createSphereMesh(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx) {
 	// The primitive built here is a sphere of radius 1, centered in the origin, on which the Mars texture is applied seamless.
-    int nDisc = 100;
+    int nDisc = 101;
     int nHeight = 50;
 
 	vDef.push_back({{0,1,0}, {0,1,0}, {0,0}});	// North Pole in y = +1
