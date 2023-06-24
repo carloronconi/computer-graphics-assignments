@@ -124,7 +124,7 @@ void createVertexDisc(std::vector<Vertex> &vDef, float h, int nDisc) {
 void Assignment15::createSphereMesh(std::vector<Vertex> &vDef, std::vector<uint32_t> &vIdx) {
 	// The primitive built here is a sphere of radius 1, centered in the origin, on which the Mars texture is applied seamless.
     int nDisc = 101;
-    int nHeight = 50;
+    int nHeight = 300;
 
 	vDef.push_back({{0,1,0}, {0,1,0}, {0,0}});	// North Pole in y = +1
 
@@ -142,7 +142,7 @@ void Assignment15::createSphereMesh(std::vector<Vertex> &vDef, std::vector<uint3
     vIdx.push_back(0) ; vIdx.push_back(1); vIdx.push_back(nDisc);
 
     //connect intermediate discs
-    for (int i = 0; i < nHeight - 3; ++i) {
+    for (int i = 0; i < nHeight - 2; ++i) {
         int upperLeft = i * nDisc + 1;
         int lowerLeft = (i + 1) * nDisc + 1;
         for (int j = 0; j < nDisc - 1; ++j) {
