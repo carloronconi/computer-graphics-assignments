@@ -214,12 +214,12 @@ class A16 : public BaseProject {
         VVColor.init(this, {
                     {0, sizeof(VertexVColor), VK_VERTEX_INPUT_RATE_VERTEX}
                 }, {
-                    {0, 0, VK_FORMAT_R32G32_SFLOAT, offsetof(VertexVColor, pos),
-                     sizeof(glm::vec2), OTHER},
-                    {0, 1, VK_FORMAT_R32G32_SFLOAT, offsetof(VertexVColor, norm),
-                     sizeof(glm::vec2), NORMAL},
-                    {0, 2, VK_FORMAT_R32G32_SFLOAT, offsetof(VertexVColor, color),
-                     sizeof(glm::vec2), COLOR}
+                    {0, 0, VK_FORMAT_R32G32B32_SFLOAT, offsetof(VertexVColor, pos),
+                     sizeof(glm::vec3), POSITION},
+                    {0, 1, VK_FORMAT_R32G32B32_SFLOAT, offsetof(VertexVColor, norm),
+                     sizeof(glm::vec3), NORMAL},
+                    {0, 2, VK_FORMAT_R32G32B32_SFLOAT, offsetof(VertexVColor, color),
+                     sizeof(glm::vec3), COLOR}
                 });
 
 		// Pipelines [Shader couples]
