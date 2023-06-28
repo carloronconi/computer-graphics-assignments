@@ -8,4 +8,9 @@ in the MSc in Computer Science and Engineering @ Polimi.
 	• Copy CMakeLists.txt into Axx folder
 	• Open Axx folder project with CLion: it will automatically detect that it's a CMake project
 	• Build and run!
+
+ ## To-dos
+	• Implement triangle strips in A14 and A15
+	• Fix A13 (12 should require fix from prof)
+	• Check that all others compile and run
 	
