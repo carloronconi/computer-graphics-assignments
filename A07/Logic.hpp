@@ -45,7 +45,7 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
 
 	// To be done in the assignment
 
-    static float yaw, pitch, roll;
+    static float yaw, camPitch = glm::radians(20.0f), camYaw;
 
     glm::vec3 ux = glm::vec3(glm::rotate(glm::mat4(1),
                                          yaw,
@@ -55,32 +55,35 @@ void GameLogic(Assignment07 *A, float Ar, glm::mat4 &ViewPrj, glm::mat4 &World) 
                                          yaw,
                                          glm::vec3(0, 1, 0)) * glm::vec4(0, 0, -1, 1));
 
-    pitch += ROT_SPEED * -r.x * deltaT;
-    if (pitch > maxPitch) pitch = maxPitch;
-    if (pitch < minPitch) pitch = minPitch;
-    yaw += ROT_SPEED * -r.y * deltaT;
-    roll += ROT_SPEED * r.z * deltaT;
+    camPitch += ROT_SPEED * -r.x * deltaT;
+    if (camPitch > maxPitch) camPitch = maxPitch;
+    if (camPitch < minPitch) camPitch = minPitch;
+    yaw += ROT_SPEED * r.z * deltaT;
+    camYaw += ROT_SPEED * -r.y * deltaT;
 
     Pos += ux * MOVE_SPEED * m.x * deltaT;
     Pos += uy * MOVE_SPEED * m.y * deltaT;
     Pos += uz * MOVE_SPEED * m.z * deltaT;
 
     World = glm::translate(glm::mat4(1),glm::vec3(Pos.x, Pos.y, Pos.z)) *
-            glm::rotate(glm::mat4(1), yaw,glm::vec3(0, 1, 0)) *
-            glm::rotate(glm::mat4(1), pitch, glm::vec3(1, 0, 0));
-            //glm::rotate(glm::mat4(1), roll, glm::vec3(0, 0, 1)); // eliminate roll character movement
+            glm::rotate(glm::mat4(1), yaw,glm::vec3(0, 1, 0));
 
-    float cameraPitch = pitch; // TODO: camera pitch same as character and fixed rotation, verify if assignment complete
     auto cameraPosition = glm::vec3(0.0f);
     auto cameraPositionHomogeneous = glm::vec4(0.0f);
     cameraPositionHomogeneous = World *
-            glm::vec4(0.0f, camHeight + camDist * std::sin(cameraPitch), camDist * std::cos(cameraPitch), 1);
+            // row below is in character space, multiplying by world turns it into global space
+            glm::vec4(camDist * std::cos(camPitch) * std::sin(camYaw), camDist * std::sin(camPitch), camDist * std::cos(camPitch) * std::cos(camYaw), 1);
+
+    /**
+    x = distance * cos(pitch) * sin(yaw);
+    y = distance * sin(pitch);
+    z = distance * cos(pitch) * cos(yaw);**/
 
     cameraPosition.x = cameraPositionHomogeneous.x;
     cameraPosition.y = cameraPositionHomogeneous.y;
     cameraPosition.z = cameraPositionHomogeneous.z;
 
-    glm::mat4 Mv = glm::lookAt(cameraPosition, Pos, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 Mv = glm::lookAt(cameraPosition, Pos + glm::vec3{0.0, camHeight, 0.0}, glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 Mprj = glm::perspective(FOVy, Ar, nearPlane, farPlane);
     Mprj[1][1] *= -1;
     ViewPrj = Mprj * Mv;
