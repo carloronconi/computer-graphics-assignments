@@ -23,7 +23,7 @@ void main() {
 	// replace the following lines with the code to implement a directional light model
 	// with the light color in gubo.lightColor, and the direction in gubo.lightDir.
 	vec3 lightDir = gubo.lightDir;
-	vec3 lightColor = vec3(gubo.lightColor.x, gubo.lightColor.y, gubo.lightColor.z);
+	vec3 lightColor = gubo.lightColor.xyz;
 
 	vec3 Diffuse = texture(tex, fragUV).rgb * 0.95f * clamp(dot(Norm, lightDir),0.0,1.0);
 	vec3 Specular = vec3(pow(clamp(dot(Norm, normalize(lightDir + EyeDir)),0.0,1.0), 160.0f));
