@@ -10,7 +10,10 @@ in the MSc in Computer Science and Engineering @ Polimi.
 - Build and run!
 
  ## To-dos
-- [ ] Check that all others compile and run
+- [x] Check that all others compile and run
+	- [x] Complete A07
+	- [x] Complete A11
+ 	- [x] Re-fix A13
 - [x] Fix A13
 - [x] Complete A15 
 	- [x] north pole
