@@ -126,25 +126,15 @@ void Assignment15::createSphereMesh(std::vector<Vertex> &vDef, std::vector<uint3
     int nDisc = 101;
     int nHeight = 300;
 
-	vDef.push_back({{0,1,0}, {0,1,0}, {0,0}});	// North Pole in y = +1
-
-    for (int i = 1; i < nHeight - 1; ++i) { // for each complete horizontal slice (excluding North and South Pole)
+    for (int i = 0; i < nHeight; ++i) { // for each complete horizontal slice (including North and South Pole)
         // createVertexDisc with nHeight different heights from +1 to -1: 1 - (2i)/nH
         createVertexDisc(vDef, 1.0f - (2.0f * (float) i)/((float) nHeight), nDisc);
     }
 
-    vDef.push_back({{0,-1,0}, {0,-1,0}, {0,1}});	// South Pole in y = -1
-
-    // connect North Pole to first disc
-    for (int i = 0; i < nDisc - 1; ++i) {
-        vIdx.push_back(0); vIdx.push_back(i + 1); vIdx.push_back(i + 2);
-    }
-    vIdx.push_back(0) ; vIdx.push_back(1); vIdx.push_back(nDisc);
-
-    //connect intermediate discs
-    for (int i = 0; i < nHeight - 2; ++i) {
-        int upperLeft = i * nDisc + 1;
-        int lowerLeft = (i + 1) * nDisc + 1;
+    //connect all discs
+    for (int i = 0; i < nHeight; ++i) {
+        int upperLeft = i * nDisc;
+        int lowerLeft = (i + 1) * nDisc;
         for (int j = 0; j < nDisc - 1; ++j) {
             vIdx.push_back(upperLeft + j); vIdx.push_back(upperLeft + j + 1); vIdx.push_back(lowerLeft + j);
             vIdx.push_back(upperLeft + j + 1); vIdx.push_back(lowerLeft + j); vIdx.push_back(lowerLeft + j + 1);
@@ -152,13 +142,5 @@ void Assignment15::createSphereMesh(std::vector<Vertex> &vDef, std::vector<uint3
         vIdx.push_back(upperLeft); vIdx.push_back(upperLeft + nDisc - 1); vIdx.push_back(lowerLeft + nDisc - 1);
         vIdx.push_back(upperLeft); vIdx.push_back(lowerLeft); vIdx.push_back(lowerLeft + nDisc - 1);
     }
-
-    // connect South Pole to last disc
-    int startingIndex = nDisc * (nHeight - 3) + 1;
-    int southPoleIndex = nDisc * (nHeight - 2) + 1;
-    for (int i = startingIndex; i < startingIndex + 6; ++i) {
-        vIdx.push_back(i); vIdx.push_back(i + 1); vIdx.push_back(southPoleIndex);
-    }
-    vIdx.push_back(startingIndex) ; vIdx.push_back(startingIndex + nDisc - 1); vIdx.push_back(southPoleIndex);
 }
 
