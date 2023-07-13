@@ -10,9 +10,9 @@ in the MSc in Computer Science and Engineering @ Polimi.
 - Build and run!
 
  ## To-dos
-- [ ] Complete A15 
-	- [ ] north pole
-	- [x] seam UVs
 - [ ] Fix A13 (12 should require fix from prof)
 - [ ] Check that all others compile and run
+- [x] Complete A15 
+	- [x] north pole
+	- [x] seam UVs
 	
