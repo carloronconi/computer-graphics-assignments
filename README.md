@@ -10,7 +10,7 @@ in the MSc in Computer Science and Engineering @ Polimi.
 	• Build and run!
 
  ## To-dos
-	• Implement triangle strips in A14 and A15
+	• Complete A15 (north pole + seam UVs)
 	• Fix A13 (12 should require fix from prof)
 	• Check that all others compile and run
 	
