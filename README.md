@@ -19,3 +19,5 @@ in the MSc in Computer Science and Engineering @ Polimi.
 	- [x] north pole
 	- [x] seam UVs
 	
+## License
+ [MIT license](https://github.com/carloronconi/computer-graphics-assignments/blob/main/LICENSE.txt)
